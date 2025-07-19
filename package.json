@@ -1,5 +1,5 @@
 {
-  "name": "git-helper-cli",
+  "name": "helpsheet-cli",
   "version": "1.1.0",
   "description": "Interactive Git command cheatsheet CLI tool",
   "main": "cli.js",
