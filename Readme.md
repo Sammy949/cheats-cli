@@ -12,30 +12,16 @@
 
 ## Installation
 
-### Global installation (recommended)
 ```bash
-npm install -g git-cheats-cli
-```
-
-### Local installation
-```bash
-npm install git-cheats-cli
+npm i helpsheet-cli
 ```
 
 ## Usage
 
-After global installation, run:
+After installation, run:
 ```bash
-git-cheats
-# or the shorter alias:
-gitc
+cheatsheet
 ```
-
-For local installation:
-```bash
-npx git-cheats-cli
-```
-
 ## Command Categories
 
 - **Init & Clone** - Repository initialization and cloning
@@ -101,14 +87,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **SamY** 
 
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your-email@example.com
+- GitHub: [@Sammy949](https://github.com/Sammy949)
+- Email: urahsamuel0202@gmail.com
 
 ## Support
 
 If you find this tool helpful, please consider:
 - ⭐ Starring the repository
-- 🐛 Reporting bugs or requesting features via [issues](https://github.com/yourusername/git-cheats-cli/issues)
+- 🐛 Reporting bugs or requesting features via [issues](https://github.com/Sammy949/git-cheats-cli/issues)
 - 💡 Contributing to the codebase
 
 ---
