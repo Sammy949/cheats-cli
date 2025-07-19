@@ -26,6 +26,10 @@
     "type": "git",
     "url": "https://github.com/Sammy949/cheats-cli.git"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sammy949/cheats-cli.git"
+  },
   "homepage": "https://github.com/Sammy949/cheats-cli#readme",
   "bugs": {
     "url": "https://github.com/Sammy949/cheats-cli/issues"
