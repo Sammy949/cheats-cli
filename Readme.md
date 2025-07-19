@@ -13,7 +13,7 @@
 ## Installation
 
 ```bash
-npm i helpsheet-cli
+npm i -g helpsheet-cli
 ```
 
 ## Usage
@@ -94,7 +94,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you find this tool helpful, please consider:
 - ⭐ Starring the repository
-- 🐛 Reporting bugs or requesting features via [issues](https://github.com/Sammy949/git-cheats-cli/issues)
+- 🐛 Reporting bugs or requesting features via [issues](https://github.com/Sammy949/cheats-cli/issues)
 - 💡 Contributing to the codebase
 
 ---
