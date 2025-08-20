@@ -1,6 +1,6 @@
 {
   "name": "helpsheet-cli",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Modular offline terminal help system with Git, NPM, Docker commands and extensible architecture for more developer tools",
   "main": "cli.js",
   "bin": {
