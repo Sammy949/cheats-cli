@@ -1,7 +1,7 @@
 {
   "name": "helpsheet-cli",
-  "version": "1.1.5",
-  "description": "Interactive offline terminal help system - start with Git commands, expandable to NPM, GitHub CLI, Docker, and more developer tools",
+  "version": "1.2.0",
+  "description": "Modular offline terminal help system with Git, NPM, Docker commands and extensible architecture for more developer tools",
   "main": "cli.js",
   "bin": {
     "helpsheet": "cli.js"
@@ -49,6 +49,7 @@
   },
   "files": [
     "cli.js",
+    "commands/",
     "README.md",
     "LICENSE"
   ]

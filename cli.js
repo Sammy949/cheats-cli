@@ -6,296 +6,335 @@ const boxen = require("boxen").default;
 const figlet = require("figlet");
 const clipboardy = require("clipboardy");
 
-// Comprehensive Git CLI Cheatsheet with detailed explanations
-// This is the first module of Helpsheet - more command categories coming soon!
-const topics = {
-  "Init & Clone": [
-    { cmd: "git init", desc: "Initialises a new Git repository" },
-    { cmd: "git init --bare", desc: "Creates a bare repository (no working directory)" },
-    { cmd: "git clone <url>", desc: "Clones a remote repo to your local machine" },
-    { cmd: "git clone <url> <directory>", desc: "Clones repo into a specific directory" },
-    { cmd: "git clone --depth 1 <url>", desc: "Shallow clone with only the latest commit" },
-    { cmd: "git clone --branch <branch> <url>", desc: "Clones a specific branch" },
-    { cmd: "git clone --recursive <url>", desc: "Clones repo with all submodules" }
-  ],
-  
-  "Status & Information": [
-    { cmd: "git status", desc: "Shows changed files and staging status" },
-    { cmd: "git status -s", desc: "Shows status in short format" },
-    { cmd: "git status --porcelain", desc: "Shows status in machine-readable format" },
-    { cmd: "git log", desc: "Shows commit history" },
-    { cmd: "git log --oneline", desc: "Shows condensed commit history" },
-    { cmd: "git log --graph --oneline --all", desc: "Shows visual branch history" },
-    { cmd: "git log -p", desc: "Shows commit history with diffs" },
-    { cmd: "git log --since=\"2 weeks ago\"", desc: "Shows commits from last 2 weeks" },
-    { cmd: "git log --author=\"username\"", desc: "Shows commits by specific author" },
-    { cmd: "git show <commit>", desc: "Shows details of a specific commit" },
-    { cmd: "git diff", desc: "Shows unstaged changes" },
-    { cmd: "git diff --staged", desc: "Shows staged changes" },
-    { cmd: "git diff HEAD~1", desc: "Shows changes since last commit" },
-    { cmd: "git blame <file>", desc: "Shows who changed each line in a file" }
-  ],
-  
-  "Staging & Commit": [
-    { cmd: "git add .", desc: "Stages all changes in the directory" },
-    { cmd: "git add <file>", desc: "Stages a specific file" },
-    { cmd: "git add -A", desc: "Stages all changes including deletions" },
-    { cmd: "git add -u", desc: "Stages only modified and deleted files" },
-    { cmd: "git add -p", desc: "Interactively stage parts of files" },
-    { cmd: "git reset <file>", desc: "Unstages a file" },
-    { cmd: "git reset", desc: "Unstages all files" },
-    { cmd: "git commit -m \"message\"", desc: "Commits staged changes with a message" },
-    { cmd: "git commit -am \"message\"", desc: "Stages and commits all tracked files" },
-    { cmd: "git commit --amend", desc: "Modifies the last commit" },
-    { cmd: "git commit --amend --no-edit", desc: "Adds staged changes to last commit" },
-    { cmd: "git commit --allow-empty -m \"message\"", desc: "Creates empty commit" }
-  ],
-  
-  "Push & Pull": [
-    { cmd: "git push", desc: "Pushes local commits to remote repository" },
-    { cmd: "git push origin <branch>", desc: "Pushes specific branch to origin" },
-    { cmd: "git push -u origin <branch>", desc: "Pushes and sets upstream tracking" },
-    { cmd: "git push --all", desc: "Pushes all branches to remote" },
-    { cmd: "git push --tags", desc: "Pushes all tags to remote" },
-    { cmd: "git pull", desc: "Fetches and merges changes from remote to local" },
-    { cmd: "git pull --rebase", desc: "Pulls and rebases instead of merging" },
-    { cmd: "git pull origin <branch>", desc: "Pulls specific branch from origin" },
-    { cmd: "git fetch", desc: "Downloads changes without merging" },
-    { cmd: "git fetch --all", desc: "Fetches from all remotes" },
-    { cmd: "git fetch --prune", desc: "Removes deleted branches from remote tracking" }
-  ],
-  
-  "Branching & Merging": [
-    { cmd: "git branch", desc: "Lists local branches" },
-    { cmd: "git branch -a", desc: "Lists all branches (local and remote)" },
-    { cmd: "git branch -r", desc: "Lists remote branches" },
-    { cmd: "git branch <branch>", desc: "Creates a new branch" },
-    { cmd: "git checkout <branch>", desc: "Switches to a branch" },
-    { cmd: "git checkout -b <branch>", desc: "Creates and switches to a new branch" },
-    { cmd: "git checkout -b <branch> origin/<branch>", desc: "Creates local branch from remote" },
-    { cmd: "git switch <branch>", desc: "Switches to a branch (newer syntax)" },
-    { cmd: "git switch -c <branch>", desc: "Creates and switches to new branch" },
-    { cmd: "git merge <branch>", desc: "Merges a branch into your current one" },
-    { cmd: "git merge --no-ff <branch>", desc: "Merges with a merge commit" },
-    { cmd: "git merge --squash <branch>", desc: "Squashes branch commits into one" },
-    { cmd: "git rebase <branch>", desc: "Rebases current branch onto another" },
-    { cmd: "git rebase -i HEAD~3", desc: "Interactive rebase of last 3 commits" }
-  ],
-  
-  "Remote & Config": [
-    { cmd: "git remote -v", desc: "Lists the current remotes" },
-    { cmd: "git remote add <name> <url>", desc: "Adds a new remote" },
-    { cmd: "git remote remove <name>", desc: "Removes a remote" },
-    { cmd: "git remote rename <old> <new>", desc: "Renames a remote" },
-    { cmd: "git remote set-url origin <url>", desc: "Changes remote URL" },
-    { cmd: "git config --list", desc: "Displays all Git config settings" },
-    { cmd: "git config --global user.name \"Name\"", desc: "Sets your global Git username" },
-    { cmd: "git config --global user.email \"email@example.com\"", desc: "Sets your global Git email" },
-    { cmd: "git config --global init.defaultBranch main", desc: "Sets default branch name" },
-    { cmd: "git config --global core.editor vim", desc: "Sets default text editor" },
-    { cmd: "git config --global alias.st status", desc: "Creates alias 'st' for status" }
-  ],
-  
-  "Stashing": [
-    { cmd: "git stash", desc: "Temporarily saves uncommitted changes" },
-    { cmd: "git stash push -m \"message\"", desc: "Stashes with a descriptive message" },
-    { cmd: "git stash list", desc: "Lists all stashes" },
-    { cmd: "git stash pop", desc: "Applies and removes the latest stash" },
-    { cmd: "git stash apply", desc: "Applies stash without removing it" },
-    { cmd: "git stash apply stash@{2}", desc: "Applies a specific stash" },
-    { cmd: "git stash drop", desc: "Deletes the latest stash" },
-    { cmd: "git stash clear", desc: "Deletes all stashes" },
-    { cmd: "git stash show -p", desc: "Shows stash contents as diff" }
-  ],
-  
-  "Tags": [
-    { cmd: "git tag", desc: "Lists all tags" },
-    { cmd: "git tag <tagname>", desc: "Creates a lightweight tag" },
-    { cmd: "git tag -a <tagname> -m \"message\"", desc: "Creates an annotated tag" },
-    { cmd: "git tag -d <tagname>", desc: "Deletes a local tag" },
-    { cmd: "git push origin <tagname>", desc: "Pushes a tag to remote" },
-    { cmd: "git push origin --tags", desc: "Pushes all tags to remote" },
-    { cmd: "git push origin --delete <tagname>", desc: "Deletes a remote tag" },
-    { cmd: "git checkout <tagname>", desc: "Checks out a specific tag" }
-  ],
-  
-  "Undoing Changes": [
-    { cmd: "git checkout -- <file>", desc: "Discards changes in working directory" },
-    { cmd: "git restore <file>", desc: "Restores file to last committed state" },
-    { cmd: "git restore --staged <file>", desc: "Unstages a file" },
-    { cmd: "git reset HEAD~1", desc: "Undoes last commit, keeps changes" },
-    { cmd: "git reset --soft HEAD~1", desc: "Undoes commit, keeps changes staged" },
-    { cmd: "git reset --hard HEAD~1", desc: "Reverts to previous commit & discards changes" },
-    { cmd: "git revert <commit>", desc: "Creates new commit that undoes changes" },
-    { cmd: "git revert --no-commit <commit>", desc: "Reverts without auto-committing" },
-    { cmd: "git reflog", desc: "Shows history of HEAD changes" },
-    { cmd: "git reset --hard <commit>", desc: "Resets to specific commit" }
-  ],
-  
-  "Search & Find": [
-    { cmd: "git grep \"pattern\"", desc: "Searches for text in tracked files" },
-    { cmd: "git grep -n \"pattern\"", desc: "Searches with line numbers" },
-    { cmd: "git log --grep=\"pattern\"", desc: "Searches commit messages" },
-    { cmd: "git log -S \"text\"", desc: "Searches for commits that add/remove text" },
-    { cmd: "git log --follow <file>", desc: "Shows history of a file including renames" },
-    { cmd: "git bisect start", desc: "Starts binary search for bug" },
-    { cmd: "git bisect good <commit>", desc: "Marks commit as good during bisect" },
-    { cmd: "git bisect bad <commit>", desc: "Marks commit as bad during bisect" }
-  ],
-  
-  "Sync & Prune": [
-    { cmd: "git fetch --prune", desc: "Removes deleted branches from remote tracking" },
-    { cmd: "git remote prune origin", desc: "Removes all stale remote-tracking branches" },
-    { cmd: "git gc", desc: "Cleans up and optimizes repository" },
-    { cmd: "git gc --aggressive", desc: "More thorough cleanup and optimization" },
-    { cmd: "git fsck", desc: "Verifies repository integrity" },
-    { cmd: "git remote update --prune", desc: "Updates all remotes and prunes" }
-  ],
-  
-  "Delete & Cleanup": [
-    { cmd: "git branch -d <branch>", desc: "Deletes a branch (safe)" },
-    { cmd: "git branch -D <branch>", desc: "Forces deletion of a branch" },
-    { cmd: "git push origin --delete <branch>", desc: "Deletes remote branch" },
-    { cmd: "git clean -n", desc: "Shows what would be deleted (dry run)" },
-    { cmd: "git clean -f", desc: "Deletes untracked files" },
-    { cmd: "git clean -fd", desc: "Deletes untracked files & folders" },
-    { cmd: "git clean -fx", desc: "Deletes untracked and ignored files" },
-    { cmd: "git rm <file>", desc: "Removes file from working tree and index" },
-    { cmd: "git rm --cached <file>", desc: "Removes file from index only" }
-  ],
-  
-  "Submodules": [
-    { cmd: "git submodule add <url> <path>", desc: "Adds a submodule" },
-    { cmd: "git submodule init", desc: "Initializes submodules" },
-    { cmd: "git submodule update", desc: "Updates submodules to recorded commits" },
-    { cmd: "git submodule update --init --recursive", desc: "Initializes and updates all submodules" },
-    { cmd: "git submodule foreach git pull origin main", desc: "Pulls latest changes in all submodules" },
-    { cmd: "git submodule status", desc: "Shows status of submodules" }
-  ],
-  
-  "GitHub CLI (gh)": [
-    { cmd: "gh auth login", desc: "Authenticate the GitHub CLI" },
-    { cmd: "gh auth status", desc: "Shows authentication status" },
-    { cmd: "gh repo create", desc: "Creates a new repository" },
-    { cmd: "gh repo clone user/repo", desc: "Clones a repo via GitHub CLI" },
-    { cmd: "gh repo fork", desc: "Forks the current repository" },
-    { cmd: "gh pr create --fill", desc: "Creates a PR with prefilled title/body" },
-    { cmd: "gh pr list", desc: "Lists pull requests" },
-    { cmd: "gh pr checkout <number>", desc: "Checks out a pull request locally" },
-    { cmd: "gh pr merge <number>", desc: "Merges a pull request" },
-    { cmd: "gh issue create", desc: "Creates a new issue" },
-    { cmd: "gh issue list", desc: "Lists issues" },
-    { cmd: "gh workflow run <workflow>", desc: "Triggers a GitHub Actions workflow" }
-  ],
-  
-  "CI/CD & Automation": [
-    { cmd: "npm test", desc: "Runs your test suite" },
-    { cmd: "npm run lint", desc: "Runs your linter" },
-    { cmd: "npm run build", desc: "Builds your project" },
-    { cmd: "git config user.name \"CI Bot\"", desc: "Sets Git username in CI pipelines" },
-    { cmd: "git config user.email \"ci@example.com\"", desc: "Sets Git email in CI pipelines" },
-    { cmd: "git add . && git commit -m \"[skip ci] Update\"", desc: "Commits with CI skip directive" },
-    { cmd: "git tag -a v1.0.0 -m \"Release v1.0.0\"", desc: "Creates release tag" },
-    { cmd: "git push origin v1.0.0", desc: "Pushes release tag" }
-  ],
-  
-  "Advanced Operations": [
-    { cmd: "git cherry-pick <commit>", desc: "Applies a commit to current branch" },
-    { cmd: "git cherry-pick -n <commit>", desc: "Cherry-picks without committing" },
-    { cmd: "git format-patch -1 <commit>", desc: "Creates patch file from commit" },
-    { cmd: "git apply <patch>", desc: "Applies a patch file" },
-    { cmd: "git archive --format=zip HEAD > archive.zip", desc: "Creates archive of current state" },
-    { cmd: "git worktree add <path> <branch>", desc: "Creates additional working tree" },
-    { cmd: "git worktree list", desc: "Lists all working trees" },
-    { cmd: "git worktree remove <path>", desc: "Removes a working tree" }
-  ],
-  
-  "Hooks & Automation": [
-    { cmd: "ls .git/hooks/", desc: "Lists available Git hooks" },
-    { cmd: "chmod +x .git/hooks/pre-commit", desc: "Makes pre-commit hook executable" },
-    { cmd: "git config core.hooksPath <path>", desc: "Sets custom hooks directory" },
-    { cmd: "git config --global init.templatedir <path>", desc: "Sets template directory for new repos" }
-  ],
-  
-  "Danger Zone ⚠️": [
-    { cmd: "git reset --hard HEAD~1", desc: "Reverts to previous commit & discards changes" },
-    { cmd: "git push --force", desc: "Force-pushes your changes (overwrites history!)" },
-    { cmd: "git push --force-with-lease", desc: "Safer force push (checks for updates)" },
-    { cmd: "git clean -fd", desc: "Deletes untracked files/folders" },
-    { cmd: "git filter-branch --tree-filter 'rm -f passwords.txt' HEAD", desc: "Removes file from entire history" },
-    { cmd: "git rebase --onto <newbase> <oldbase> <branch>", desc: "Advanced rebasing" },
-    { cmd: "git reflog expire --expire=now --all", desc: "Expires all reflog entries" },
-    { cmd: "git gc --prune=now", desc: "Aggressive garbage collection" }
-  ]
-};
+// Import the command modules loader
+const { getAvailableDevTools, getDevToolModule, searchAllCommands } = require('./commands');
 
+// Display the beautiful ASCII art header
+function displayHeader() {
+  const header = figlet.textSync("Helpsheet", {
+    font: "Standard",
+    horizontalLayout: "default",
+    verticalLayout: "default"
+  });
+  
+  console.log(chalk.cyan(header));
+  console.log(chalk.yellow("🚀 Your comprehensive offline terminal help system"));
+  console.log(chalk.gray("Navigate through developer tools and find the commands you need\n"));
+}
 
-// Header
-console.log(
-  chalk.cyanBright(
-    figlet.textSync("Helpsheet", { horizontalLayout: "default" })
-  )
-);
-console.log(chalk.bold.green("Welcome to Helpsheet - Your Terminal Help Companion\n"));
-console.log(chalk.gray("Currently featuring Git commands. More tools coming soon!\n"));
-
-// Prompt for topic
-inquirer
-  .prompt([
+// Main menu to select development tool
+async function selectDevTool() {
+  const devTools = getAvailableDevTools();
+  
+  if (devTools.length === 0) {
+    console.log(chalk.red("❌ No command modules found. Please check the commands directory."));
+    process.exit(1);
+  }
+  
+  const { selectedTool } = await inquirer.prompt([
     {
       type: "list",
-      name: "topic",
-      message: "📌 What category of Git commands do you want to explore?",
-      choices: Object.keys(topics)
-    }
-  ])
-  .then((answers) => {
-    const selected = topics[answers.topic];
-
-    inquirer
-      .prompt([
+      name: "selectedTool",
+      message: "🔧 Which development tool would you like to explore?",
+      choices: [
+        ...devTools.map(tool => ({
+          name: `${tool.icon} ${tool.name} - ${tool.description} (${tool.categoryCount} categories)`,
+          value: tool.key
+        })),
+        new inquirer.Separator(),
         {
-          type: "list",
-          name: "command",
-          message: `📋 Pick a command from "${answers.topic}":`,
-          choices: selected.map((item, idx) => ({
-            name: `${chalk.yellow(item.cmd)} — ${chalk.gray(item.desc)}`,
-            value: idx
-          }))
+          name: "🔍 Search across all tools",
+          value: "search"
+        },
+        {
+          name: "❌ Exit",
+          value: "exit"
         }
-      ])
-      .then(({ command }) => {
-        const selectedCmd = selected[command];
-        
-        // Try to copy to clipboard with better error handling
-        try {
-          clipboardy.default.writeSync(selectedCmd.cmd);
-          var clipboardStatus = chalk.gray("(Copied to clipboard!)");
-        } catch (error) {
-          console.log(chalk.yellow("⚠️  Could not copy to clipboard. You may need to install clipboard utilities."));
-          clipboardStatus = chalk.gray("(Clipboard copy failed)");
-        }
+      ]
+    }
+  ]);
+  
+  if (selectedTool === "exit") {
+    console.log(chalk.blue("👋 Thanks for using Helpsheet!"));
+    process.exit(0);
+  }
+  
+  if (selectedTool === "search") {
+    await handleGlobalSearch();
+    return;
+  }
+  
+  await selectCategory(selectedTool);
+}
 
-        const display = `
-${chalk.bold.green("Command:")} ${chalk.cyan(selectedCmd.cmd)}
-
-${chalk.bold.green("Description:")} ${selectedCmd.desc}
-
-${clipboardStatus}
-        `;
-
-        console.log(
-          boxen(display, {
-            padding: 1,
-            borderStyle: "round",
-            borderColor: "cyanBright"
-          })
-        );
-      });
-  })
-  .catch((err) => {
-    console.error(chalk.red("❌ An error occurred:"));
-    console.error(chalk.gray(err.message || err));
-    console.log(chalk.yellow("\n💡 If this persists, please report the issue on GitHub."));
-    process.exit(1);
+// Handle global search across all tools
+async function handleGlobalSearch() {
+  const { searchQuery } = await inquirer.prompt([
+    {
+      type: "input",
+      name: "searchQuery",
+      message: "🔍 What command are you looking for?",
+      validate: (input) => input.trim().length > 0 ? true : "Please enter a search term"
+    }
+  ]);
+  
+  const results = searchAllCommands(searchQuery.trim());
+  
+  if (results.length === 0) {
+    console.log(chalk.yellow("🔍 No commands found matching your search."));
+    await selectDevTool();
+    return;
+  }
+  
+  // Group results by dev tool
+  const groupedResults = {};
+  results.forEach(result => {
+    if (!groupedResults[result.devTool]) {
+      groupedResults[result.devTool] = [];
+    }
+    groupedResults[result.devTool].push(result);
   });
+  
+  console.log(chalk.green(`\n🔍 Found ${results.length} commands matching "${searchQuery}":\n`));
+  
+  Object.entries(groupedResults).forEach(([devTool, commands]) => {
+    console.log(chalk.cyan(`\n${commands[0].devToolIcon} ${devTool}:`));
+    commands.forEach(command => {
+      console.log(chalk.white(`  ${command.cmd}`));
+      console.log(chalk.gray(`    ${command.desc}`));
+    });
+  });
+  
+  await selectDevTool();
+}
+
+// Select category within a specific dev tool
+async function selectCategory(toolKey) {
+  const devTool = getDevToolModule(toolKey);
+  
+  if (!devTool) {
+    console.log(chalk.red(`❌ Failed to load ${toolKey} module.`));
+    await selectDevTool();
+    return;
+  }
+  
+  const categories = devTool.getCategories();
+  
+  const { selectedCategory } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "selectedCategory",
+      message: `${devTool.icon} ${devTool.name} - Select a category:`,
+      choices: [
+        ...categories.map(category => ({
+          name: category,
+          value: category
+        })),
+        new inquirer.Separator(),
+        {
+          name: "🔍 Search within this tool",
+          value: "search"
+        },
+        {
+          name: "⬅️  Back to dev tools",
+          value: "back"
+        },
+        {
+          name: "❌ Exit",
+          value: "exit"
+        }
+      ]
+    }
+  ]);
+  
+  if (selectedCategory === "exit") {
+    console.log(chalk.blue("👋 Thanks for using Helpsheet!"));
+    process.exit(0);
+  }
+  
+  if (selectedCategory === "back") {
+    await selectDevTool();
+    return;
+  }
+  
+  if (selectedCategory === "search") {
+    await handleToolSearch(toolKey);
+    return;
+  }
+  
+  await displayCommands(toolKey, selectedCategory);
+}
+
+// Handle search within a specific tool
+async function handleToolSearch(toolKey) {
+  const devTool = getDevToolModule(toolKey);
+  
+  const { searchQuery } = await inquirer.prompt([
+    {
+      type: "input",
+      name: "searchQuery",
+      message: `🔍 Search within ${devTool.name}:`,
+      validate: (input) => input.trim().length > 0 ? true : "Please enter a search term"
+    }
+  ]);
+  
+  const results = devTool.searchCommands(searchQuery.trim());
+  
+  if (results.length === 0) {
+    console.log(chalk.yellow("🔍 No commands found matching your search."));
+    await selectCategory(toolKey);
+    return;
+  }
+  
+  console.log(chalk.green(`\n🔍 Found ${results.length} commands in ${devTool.name} matching "${searchQuery}":\n`));
+  
+  results.forEach(command => {
+    console.log(chalk.white(`  ${command.cmd}`));
+    console.log(chalk.gray(`    ${command.desc}`));
+    console.log(chalk.cyan(`    Category: ${command.category}\n`));
+  });
+  
+  await selectCategory(toolKey);
+}
+
+// Display commands for a specific category
+async function displayCommands(toolKey, category) {
+  const devTool = getDevToolModule(toolKey);
+  const commands = devTool.getCommands(category);
+  
+  console.log(chalk.cyan(`\n${devTool.icon} ${devTool.name} - ${category}`));
+  console.log(chalk.gray("=".repeat(50)));
+  
+  const { selectedCommand } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "selectedCommand",
+      message: "📋 Select a command to copy to clipboard:",
+      choices: [
+        ...commands.map(command => ({
+          name: `${command.cmd}`,
+          value: command
+        })),
+        new inquirer.Separator(),
+        {
+          name: "⬅️  Back to categories",
+          value: "back"
+        },
+        {
+          name: "🏠 Back to dev tools",
+          value: "home"
+        },
+        {
+          name: "❌ Exit",
+          value: "exit"
+        }
+      ]
+    }
+  ]);
+  
+  if (selectedCommand === "exit") {
+    console.log(chalk.blue("👋 Thanks for using Helpsheet!"));
+    process.exit(0);
+  }
+  
+  if (selectedCommand === "back") {
+    await selectCategory(toolKey);
+    return;
+  }
+  
+  if (selectedCommand === "home") {
+    await selectDevTool();
+    return;
+  }
+  
+  // Copy command to clipboard and show details
+  try {
+    await clipboardy.write(selectedCommand.cmd);
+    
+    const commandBox = boxen(
+      `${chalk.green("✅ Command copied to clipboard!")}\n\n` +
+      `${chalk.white("Command:")} ${chalk.yellow(selectedCommand.cmd)}\n\n` +
+      `${chalk.white("Description:")} ${chalk.cyan(selectedCommand.desc)}\n\n` +
+      `${chalk.gray("You can now paste this command in your terminal")}`,
+      {
+        padding: 1,
+        margin: 1,
+        borderStyle: "round",
+        borderColor: "green"
+      }
+    );
+    
+    console.log(commandBox);
+    
+    // Ask what to do next
+    const { nextAction } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "nextAction",
+        message: "What would you like to do next?",
+        choices: [
+          {
+            name: "🔄 View another command from this category",
+            value: "same_category"
+          },
+          {
+            name: "📁 Browse another category",
+            value: "other_category"
+          },
+          {
+            name: "🔧 Switch to another dev tool",
+            value: "other_tool"
+          },
+          {
+            name: "❌ Exit",
+            value: "exit"
+          }
+        ]
+      }
+    ]);
+    
+    switch (nextAction) {
+      case "same_category":
+        await displayCommands(toolKey, category);
+        break;
+      case "other_category":
+        await selectCategory(toolKey);
+        break;
+      case "other_tool":
+        await selectDevTool();
+        break;
+      case "exit":
+        console.log(chalk.blue("👋 Thanks for using Helpsheet!"));
+        process.exit(0);
+    }
+    
+  } catch (error) {
+    console.log(chalk.red(`❌ Failed to copy command to clipboard: ${error.message}`));
+    console.log(chalk.yellow(`Command: ${selectedCommand.cmd}`));
+    console.log(chalk.cyan(`Description: ${selectedCommand.desc}`));
+    
+    await displayCommands(toolKey, category);
+  }
+}
+
+// Main application entry point
+async function main() {
+  try {
+    displayHeader();
+    await selectDevTool();
+  } catch (error) {
+    console.error(chalk.red("❌ An error occurred:"), error.message);
+    process.exit(1);
+  }
+}
+
+// Handle graceful shutdown
+process.on('SIGINT', () => {
+  console.log(chalk.blue("\n👋 Thanks for using Helpsheet!"));
+  process.exit(0);
+});
+
+// Start the application
+if (require.main === module) {
+  main();
+}
