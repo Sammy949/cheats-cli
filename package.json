@@ -1,10 +1,10 @@
 {
   "name": "helpsheet-cli",
   "version": "1.1.4",
-  "description": "Interactive Git command cheatsheet CLI tool",
+  "description": "Interactive offline terminal help system - start with Git commands, expandable to NPM, GitHub CLI, Docker, and more developer tools",
   "main": "cli.js",
   "bin": {
-    "cheatsheet": "cli.js"
+    "helpsheet": "cli.js"
   },
   "scripts": {
     "start": "node cli.js",
@@ -12,13 +12,20 @@
     "prepublishOnly": "npm audit --audit-level moderate"
   },
   "keywords": [
+    "helpsheet",
+    "offline-help",
+    "terminal-help",
     "git",
     "cli",
     "cheatsheet",
     "developer-tools",
     "git-commands",
     "interactive",
-    "terminal"
+    "terminal",
+    "npm-help",
+    "github-cli",
+    "docker-help",
+    "command-reference"
   ],
   "author": "Samuel Urah Yahaya <urahsamuel0202@gmail.com>",
   "license": "ISC",

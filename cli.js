@@ -7,6 +7,7 @@ const figlet = require("figlet");
 const clipboardy = require("clipboardy");
 
 // Comprehensive Git CLI Cheatsheet with detailed explanations
+// This is the first module of Helpsheet - more command categories coming soon!
 const topics = {
   "Init & Clone": [
     { cmd: "git init", desc: "Initialises a new Git repository" },
@@ -232,10 +233,11 @@ const topics = {
 // Header
 console.log(
   chalk.cyanBright(
-    figlet.textSync("Git Cheats", { horizontalLayout: "default" })
+    figlet.textSync("Helpsheet", { horizontalLayout: "default" })
   )
 );
-console.log(chalk.bold.green("Welcome to SamY's GitHub Cheatsheet CLI\n"));
+console.log(chalk.bold.green("Welcome to Helpsheet - Your Terminal Help Companion\n"));
+console.log(chalk.gray("Currently featuring Git commands. More tools coming soon!\n"));
 
 // Prompt for topic
 inquirer
@@ -264,14 +266,22 @@ inquirer
       ])
       .then(({ command }) => {
         const selectedCmd = selected[command];
-        clipboardy.default.writeSync(selectedCmd.cmd);
+        
+        // Try to copy to clipboard with better error handling
+        try {
+          clipboardy.default.writeSync(selectedCmd.cmd);
+          var clipboardStatus = chalk.gray("(Copied to clipboard!)");
+        } catch (error) {
+          console.log(chalk.yellow("⚠️  Could not copy to clipboard. You may need to install clipboard utilities."));
+          clipboardStatus = chalk.gray("(Clipboard copy failed)");
+        }
 
         const display = `
 ${chalk.bold.green("Command:")} ${chalk.cyan(selectedCmd.cmd)}
 
 ${chalk.bold.green("Description:")} ${selectedCmd.desc}
 
-${chalk.gray("(Copied to clipboard!)")}
+${clipboardStatus}
         `;
 
         console.log(
@@ -283,4 +293,9 @@ ${chalk.gray("(Copied to clipboard!)")}
         );
       });
   })
-  .catch((err) => console.error(err));
+  .catch((err) => {
+    console.error(chalk.red("❌ An error occurred:"));
+    console.error(chalk.gray(err.message || err));
+    console.log(chalk.yellow("\n💡 If this persists, please report the issue on GitHub."));
+    process.exit(1);
+  });

@@ -1,14 +1,25 @@
 # Helpsheet CLI
 
-🚀 An interactive Git command cheatsheet right in your terminal!
+🚀 **Your comprehensive offline terminal help system** - Start with Git, expand to NPM, GitHub CLI, Docker, and more!
+
+## Vision
+
+Helpsheet is designed to be your go-to offline terminal companion. While it currently focuses on Git commands, the architecture is built to easily expand and include help for:
+
+- **Git** (Current) ✅
+- **NPM** (Planned) 🚧
+- **GitHub CLI** (Planned) 🚧
+- **Docker** (Planned) 🚧
+- **And many more developer tools...**
 
 ## Features
 
-- 🎯 **Interactive browsing** - Navigate through categorized Git commands
+- 🎯 **Interactive browsing** - Navigate through categorized commands
 - 📋 **Auto-copy to clipboard** - Commands are automatically copied when selected  
 - 🎨 **Beautiful terminal UI** - Clean, colorful interface with boxed output
 - 📚 **Comprehensive coverage** - 200+ Git commands across 20+ categories
 - ⚠️ **Safety first** - Dangerous commands clearly marked in "Danger Zone"
+- 🔌 **Extensible architecture** - Easy to add new command categories
 
 ## Installation
 
@@ -20,9 +31,10 @@ npm i -g helpsheet-cli
 
 After installation, run:
 ```bash
-cheatsheet
+helpsheet
 ```
-## Command Categories
+
+## Current Command Categories (Git)
 
 - **Init & Clone** - Repository initialization and cloning
 - **Status & Information** - Checking repository status and history
@@ -52,7 +64,7 @@ cheatsheet
 | |_|| || |  | |___ | | | |  __/ (_| | |_\__ \
  \____||_||_|   \____||_| |_|\___|\__,_|\__|___/
 
-Welcome to SamY's GitHub Cheatsheet CLI
+Welcome to Helpsheet - Your Terminal Help Companion
 
 ? 📌 What category of Git commands do you want to explore? (Use arrow keys)
 ❯ Init & Clone
@@ -79,6 +91,16 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## Roadmap
+
+- [x] Git command cheatsheet
+- [ ] NPM command reference
+- [ ] GitHub CLI commands
+- [ ] Docker commands
+- [ ] Kubernetes commands
+- [ ] Custom command categories
+- [ ] Plugin system for community contributions
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -96,7 +118,10 @@ If you find this tool helpful, please consider:
 - ⭐ Starring the repository
 - 🐛 Reporting bugs or requesting features via [issues](https://github.com/Sammy949/cheats-cli/issues)
 - 💡 Contributing to the codebase
+- 🚀 Suggesting new command categories to add
 
 ---
 
 Made with ❤️ for developers by developers
+
+**Helpsheet - Because sometimes you need help offline! 📚**
