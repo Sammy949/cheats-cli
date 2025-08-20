@@ -1,15 +1,16 @@
 # Helpsheet CLI
 
-🚀 **Your comprehensive offline terminal help system** - Start with Git, expand to NPM, GitHub CLI, Docker, and more!
+🚀 **Your comprehensive modular offline terminal help system** - Git, NPM, Docker commands and more!
 
 ## Vision
 
-Helpsheet is designed to be your go-to offline terminal companion. While it currently focuses on Git commands, the architecture is built to easily expand and include help for:
+Helpsheet is your go-to offline terminal companion with a modular architecture that supports multiple developer tools:
 
-- **Git** (Current) ✅
-- **NPM** (Planned) 🚧
+- **Git** (Available) ✅ - 18 categories, 200+ commands
+- **NPM** (Available) ✅ - 4 categories, 32+ commands  
+- **Docker** (Available) ✅ - 6 categories, 48+ commands
 - **GitHub CLI** (Planned) 🚧
-- **Docker** (Planned) 🚧
+- **Kubernetes** (Planned) 🚧
 - **And many more developer tools...**
 
 ## Features
@@ -17,9 +18,11 @@ Helpsheet is designed to be your go-to offline terminal companion. While it curr
 - 🎯 **Interactive browsing** - Navigate through categorized commands
 - 📋 **Auto-copy to clipboard** - Commands are automatically copied when selected  
 - 🎨 **Beautiful terminal UI** - Clean, colorful interface with boxed output
-- 📚 **Comprehensive coverage** - 200+ Git commands across 20+ categories
+- 🔧 **Multi-tool support** - Git, NPM, Docker commands in one place
+- 🔍 **Global search** - Search across all tools or within specific tools
 - ⚠️ **Safety first** - Dangerous commands clearly marked in "Danger Zone"
-- 🔌 **Extensible architecture** - Easy to add new command categories
+- 🔌 **Modular architecture** - Easy to add new developer tools
+- 🧹 **Clean interface** - Collapsible sections and clear navigation
 
 ## Installation
 
@@ -34,46 +37,68 @@ After installation, run:
 helpsheet
 ```
 
-## Current Command Categories (Git)
+You'll see a clean interface with:
+1. **Tool Selection** - Choose from Git, NPM, Docker, or search across all
+2. **Category Browsing** - Navigate through organized command categories  
+3. **Command Selection** - Pick commands to copy to clipboard
+4. **Global Search** - Find commands across all tools
 
-- **Init & Clone** - Repository initialization and cloning
-- **Status & Information** - Checking repository status and history
-- **Staging & Commit** - Adding files and making commits
-- **Push & Pull** - Synchronizing with remote repositories
-- **Branching & Merging** - Branch operations and merging
-- **Remote & Config** - Remote management and Git configuration
-- **Stashing** - Temporary storage of changes
-- **Tags** - Version tagging operations
-- **Undoing Changes** - Reverting and resetting operations
-- **Search & Find** - Finding commits, files, and content
-- **Sync & Prune** - Repository maintenance and cleanup
-- **Delete & Cleanup** - Removing branches and files
-- **Submodules** - Git submodule management
-- **GitHub CLI (gh)** - GitHub CLI commands
-- **CI/CD & Automation** - Continuous integration helpers
-- **Advanced Operations** - Cherry-picking, patches, worktrees
-- **Hooks & Automation** - Git hooks configuration
-- **Danger Zone ⚠️** - Potentially destructive operations
+## Available Developer Tools
+
+### 🐳 Docker (6 Categories)
+- Container Management - Run, stop, start containers
+- Image Management - Build, pull, tag images  
+- Networking - Create and manage networks
+- Volumes & Data - Handle persistent storage
+- System & Info - Monitor and inspect Docker
+- Docker Compose - Multi-container applications
+
+### 📚 Git (18 Categories)
+
+- Init & Clone - Repository initialization and cloning
+- Status & Information - Checking repository status and history
+- Staging & Commit - Adding files and making commits
+- Push & Pull - Synchronizing with remote repositories
+- Branching & Merging - Branch operations and merging
+- Remote & Config - Remote management and Git configuration
+- Stashing - Temporary storage of changes
+- Tags - Version tagging operations
+- Undoing Changes - Reverting and resetting operations
+- Search & Find - Finding commits, files, and content
+- Sync & Prune - Repository maintenance and cleanup
+- Delete & Cleanup - Removing branches and files
+- Submodules - Git submodule management
+- GitHub CLI (gh) - GitHub CLI commands
+- CI/CD & Automation - Continuous integration helpers
+- Advanced Operations - Cherry-picking, patches, worktrees
+- Hooks & Automation - Git hooks configuration
+- Danger Zone ⚠️ - Potentially destructive operations
+
+### 📦 NPM (4 Categories)
+- Package Management - Install, update, uninstall packages
+- Scripts & Execution - Run scripts and commands
+- Package Publishing - Publish and manage packages
+- Configuration & Info - Settings and package information
 
 ## Screenshots
 
 ```
- ____  _  _     ____  _                _       
-/ ___|| |(_)   / ___|| |__   ___  __ _| |_ ___ 
-| |  _| || |  | |    | '_ \ / _ \/ _` | __/ __|
-| |_|| || |  | |___ | | | |  __/ (_| | |_\__ \
- \____||_||_|   \____||_| |_|\___|\__,_|\__|___/
+ _   _      _           _               _   
+| | | | ___| |_ __  ___| |__   ___  ___| |_ 
+| |_| |/ _ \ | '_ \/ __| '_ \ / _ \/ _ \ __|
+|  _  |  __/ | |_) \__ \ | | |  __/  __/ |_ 
+|_| |_|\___|_| .__/|___/_| |_|\___|\___|\__|
+             |_|
+🚀 Your comprehensive offline terminal help system
+Navigate through developer tools and find the commands you need
 
-Welcome to Helpsheet - Your Terminal Help Companion
+📚 3 Development Knowledge Bases Available:
+   (Use arrow keys and Enter to navigate)
 
-? 📌 What category of Git commands do you want to explore? (Use arrow keys)
-❯ Init & Clone
-  Status & Information  
-  Staging & Commit
-  Push & Pull
-  Branching & Merging
-  Remote & Config
-  Stashing
+? What would you like to do?
+❯ 🔽 Expand knowledge bases details
+  🚀 Start exploring tools
+  ❌ Exit
 ```
 
 ## Requirements
@@ -93,10 +118,13 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Roadmap
 
-- [x] Git command cheatsheet
-- [ ] NPM command reference
+- [x] Git command cheatsheet (18 categories, 200+ commands)
+- [x] NPM command reference (4 categories, 32+ commands)
+- [x] Docker commands (6 categories, 48+ commands)
+- [x] Modular architecture with auto-discovery
+- [x] Global and tool-specific search
+- [x] Collapsible interface design
 - [ ] GitHub CLI commands
-- [ ] Docker commands
 - [ ] Kubernetes commands
 - [ ] Custom command categories
 - [ ] Plugin system for community contributions

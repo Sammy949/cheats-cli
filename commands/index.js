@@ -4,8 +4,16 @@
 const fs = require('fs');
 const path = require('path');
 
-// Function to dynamically load all command modules
+// Cache for loaded modules to prevent reloading
+let cachedModules = null;
+
+// Function to dynamically load all command modules (with caching)
 function loadCommandModules() {
+  // Return cached modules if already loaded
+  if (cachedModules !== null) {
+    return cachedModules;
+  }
+  
   const modules = {};
   const commandsDir = __dirname;
   
@@ -24,7 +32,7 @@ function loadCommandModules() {
           if (commandModule && commandModule.name && commandModule.topics) {
             const moduleName = file.replace('.js', '').toLowerCase();
             modules[moduleName] = commandModule;
-            console.log(`✅ Loaded command module: ${commandModule.name} (${commandModule.icon})`);
+            // Silent loading - no console output
           }
         } catch (error) {
           console.warn(`⚠️  Failed to load module ${file}:`, error.message);
@@ -32,6 +40,8 @@ function loadCommandModules() {
       }
     });
     
+    // Cache the modules
+    cachedModules = modules;
     return modules;
   } catch (error) {
     console.error('❌ Error loading command modules:', error.message);

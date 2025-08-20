@@ -9,6 +9,14 @@ const clipboardy = require("clipboardy");
 // Import the command modules loader
 const { getAvailableDevTools, getDevToolModule, searchAllCommands } = require('./commands');
 
+// Function to clear terminal screen
+function clearTerminal() {
+  // Clear terminal for cross-platform compatibility
+  process.stdout.write('\x1Bc');
+  // Alternative method for some terminals
+  console.clear();
+}
+
 // Display the beautiful ASCII art header
 function displayHeader() {
   const header = figlet.textSync("Helpsheet", {
@@ -22,6 +30,22 @@ function displayHeader() {
   console.log(chalk.gray("Navigate through developer tools and find the commands you need\n"));
 }
 
+// Display available tools summary with collapsible interface
+function displayToolsSummary(devTools) {
+  console.log(chalk.blue(`📚 ${devTools.length} Development Knowledge Bases Available:`));
+  console.log(chalk.gray("   (Use arrow keys and Enter to navigate)\n"));
+}
+
+// Display expanded tools list
+function displayExpandedTools(devTools) {
+  console.log(chalk.blue(`📚 ${devTools.length} Development Knowledge Bases Available:\n`));
+  
+  devTools.forEach(tool => {
+    console.log(chalk.white(`${tool.icon} ${tool.name} - ${tool.description}`));
+    console.log(chalk.gray(`   ${tool.categoryCount} command categories\n`));
+  });
+}
+
 // Main menu to select development tool
 async function selectDevTool() {
   const devTools = getAvailableDevTools();
@@ -31,6 +55,62 @@ async function selectDevTool() {
     process.exit(1);
   }
   
+  // Clear terminal and show fresh interface
+  clearTerminal();
+  displayHeader();
+  displayToolsSummary(devTools);
+  
+  // Ask if user wants to see details
+  const { showDetails } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "showDetails",
+      message: "What would you like to do?",
+      choices: [
+        {
+          name: "🔽 Expand knowledge bases details",
+          value: "expand"
+        },
+        {
+          name: "🚀 Start exploring tools",
+          value: "start"
+        },
+        {
+          name: "❌ Exit",
+          value: "exit"
+        }
+      ]
+    }
+  ]);
+  
+  if (showDetails === "exit") {
+    console.log(chalk.blue("👋 Thanks for using Helpsheet!"));
+    process.exit(0);
+  }
+  
+  if (showDetails === "expand") {
+    // Clear and show expanded view
+    clearTerminal();
+    displayHeader();
+    displayExpandedTools(devTools);
+    
+    // Wait for user to continue
+    await inquirer.prompt([
+      {
+        type: "input",
+        name: "continue",
+        message: "Press Enter to continue to tool selection...",
+        default: ""
+      }
+    ]);
+    
+    // Clear and show main interface
+    clearTerminal();
+    displayHeader();
+    displayToolsSummary(devTools);
+  }
+  
+  // Now show the main tool selection
   const { selectedTool } = await inquirer.prompt([
     {
       type: "list",
@@ -105,7 +185,40 @@ async function handleGlobalSearch() {
     });
   });
   
-  await selectDevTool();
+  // Ask what to do next after search
+  const { nextAction } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "nextAction",
+      message: "\nWhat would you like to do next?",
+      choices: [
+        {
+          name: "🔄 Search again",
+          value: "search_again"
+        },
+        {
+          name: "🏠 Back to main menu",
+          value: "main_menu"
+        },
+        {
+          name: "❌ Exit",
+          value: "exit"
+        }
+      ]
+    }
+  ]);
+  
+  switch (nextAction) {
+    case "search_again":
+      await handleGlobalSearch();
+      break;
+    case "main_menu":
+      await selectDevTool();
+      break;
+    case "exit":
+      console.log(chalk.blue("👋 Thanks for using Helpsheet!"));
+      process.exit(0);
+  }
 }
 
 // Select category within a specific dev tool
@@ -194,7 +307,47 @@ async function handleToolSearch(toolKey) {
     console.log(chalk.cyan(`    Category: ${command.category}\n`));
   });
   
-  await selectCategory(toolKey);
+  // Ask what to do next after search
+  const { nextAction } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "nextAction",
+      message: "\nWhat would you like to do next?",
+      choices: [
+        {
+          name: "🔄 Search again in this tool",
+          value: "search_again"
+        },
+        {
+          name: "📁 Browse categories",
+          value: "browse_categories"
+        },
+        {
+          name: "🏠 Back to main menu",
+          value: "main_menu"
+        },
+        {
+          name: "❌ Exit",
+          value: "exit"
+        }
+      ]
+    }
+  ]);
+  
+  switch (nextAction) {
+    case "search_again":
+      await handleToolSearch(toolKey);
+      break;
+    case "browse_categories":
+      await selectCategory(toolKey);
+      break;
+    case "main_menu":
+      await selectDevTool();
+      break;
+    case "exit":
+      console.log(chalk.blue("👋 Thanks for using Helpsheet!"));
+      process.exit(0);
+  }
 }
 
 // Display commands for a specific category
